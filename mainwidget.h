@@ -7,7 +7,7 @@
 class MainWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit MainWidget(QWidget *parent = nullptr);
+    explicit MainWidget(QWidget *parent = 0);
 
     int updateInterval() const;
     int desertWidth() const;
@@ -39,8 +39,8 @@ private:
     QTimer * mTimer;
     QSize mDesertSize;
     QVector<bool> mCells;
-    QStack<QPair<int, int>> mDeads;
-    QStack<QPair<int, int>> mAlives;
+    QStack< QPair< int, int > > mDeads;
+    QStack< QPair< int, int > > mAlives;
     QSizeF mCellSize;
 
     QPoint desertPointToScreenPoint(QPoint pt);

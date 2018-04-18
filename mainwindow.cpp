@@ -21,11 +21,11 @@ static QMap<QString, PPoints> sPresets;
 
 void MainWindow::initPresets() {
     sPresets.clear();
-    sPresets["Empty"]    = { };
-    sPresets["Glider"]   = { {1,0}, {2,1}, {2,2}, {1,2}, {0,2} };
-    sPresets["Exploder"] = { {0,0}, {0,1}, {0,2}, {0,3}, {0,4}, {2,0}, {2,4}, {4,0}, {4,1}, {4,2}, {4,3}, {4,4} };
-    sPresets["Tumbler"]  = { {0,3}, {0,4}, {0,5}, {1,0}, {1,1}, {1,5}, {2,0}, {2,1}, {2,2}, {2,3}, {2,4}, {4,0}, {4,1}, {4,2}, {4,3}, {4,4}, {5,0}, {5,1}, {5,5}, {6,3}, {6,4}, {6,5} };
-    sPresets["Gosper Glider Gun"] = { {0,2}, {0,3}, {1,2}, {1,3}, {8,3}, {8,4}, {9,2}, {9,4}, {10,2}, {10,3}, {16,4}, {16,5}, {16,6}, {17,4}, {18,5}, {22,1}, {22,2}, {23,0}, {23,2}, {24,0}, {24,1}, {24,12}, {24,13}, {25,12}, {25,14}, {26,12}, {34,0}, {34,1}, {35,0}, {35,1}, {35,7}, {35,8}, {35,9}, {36,7}, {37,8} };
+    sPresets["Empty"]    = PPoints();
+    sPresets["Glider"]   = PPoints() << QPoint(1,0) << QPoint(2,1) << QPoint(2,2) << QPoint(1,2) << QPoint(0,2);
+    sPresets["Exploder"] = PPoints() << QPoint(0,0) << QPoint(0,1) << QPoint(0,2) << QPoint(0,3) << QPoint(0,4) << QPoint(2,0) << QPoint(2,4) << QPoint(4,0) << QPoint(4,1) << QPoint(4,2) << QPoint(4,3) << QPoint(4,4);
+    sPresets["Tumbler"]  = PPoints() << QPoint(0,3) << QPoint(0,4) << QPoint(0,5) << QPoint(1,0) << QPoint(1,1) << QPoint(1,5) << QPoint(2,0) << QPoint(2,1) << QPoint(2,2) << QPoint(2,3) << QPoint(2,4) << QPoint(4,0) << QPoint(4,1) << QPoint(4,2) << QPoint(4,3) << QPoint(4,4) << QPoint(5,0) << QPoint(5,1) << QPoint(5,5) << QPoint(6,3) << QPoint(6,4) << QPoint(6,5);
+    sPresets["Gosper Glider Gun"] = PPoints() << QPoint(0,2) << QPoint(0,3) << QPoint(1,2) << QPoint(1,3) << QPoint(8,3) << QPoint(8,4) << QPoint(9,2) << QPoint(9,4) << QPoint(10,2) << QPoint(10,3) << QPoint(16,4) << QPoint(16,5) << QPoint(16,6) << QPoint(17,4) << QPoint(18,5) << QPoint(22,1) << QPoint(22,2) << QPoint(23,0) << QPoint(23,2) << QPoint(24,0) << QPoint(24,1) << QPoint(24,12) << QPoint(24,13) << QPoint(25,12) << QPoint(25,14) << QPoint(26,12) << QPoint(34,0) << QPoint(34,1) << QPoint(35,0) << QPoint(35,1) << QPoint(35,7) << QPoint(35,8) << QPoint(35,9) << QPoint(36,7) << QPoint(37,8);
 }
 
 MainWindow::MainWindow(QWidget *parent) :

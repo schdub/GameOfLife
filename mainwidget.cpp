@@ -39,7 +39,7 @@ void MainWidget::mousePressEvent(QMouseEvent * event) {
     QPoint pt = screenPointToDesertPoint(event->pos());
     //TRACE << event->pos() << pt;
     bool * pCell = cellAt(pt);
-    if (pCell != nullptr) {
+    if (pCell != NULL) {
         *pCell = !(*pCell);
         update();
     }
@@ -195,7 +195,7 @@ bool * MainWidget::cellAt(const QPoint & pt) {
 bool * MainWidget::cellAt(int x, int y) {
     if (x >= mDesertSize.width() || x < 0 ||
         y >= mDesertSize.height() || y < 0) {
-        return nullptr;
+        return NULL;
     }
     return mCells.data() + y * (mDesertSize.width()) + x;
 }
