@@ -18,6 +18,7 @@ void MainWindow::initPresets() {
     sPresets["Glider"]   = { {1,0}, {2,1}, {2,2}, {1,2}, {0,2} };
     sPresets["Exploder"] = { {0,0}, {0,1}, {0,2}, {0,3}, {0,4}, {2,0}, {2,4}, {4,0}, {4,1}, {4,2}, {4,3}, {4,4} };
     sPresets["Tumbler"]  = { {0,3}, {0,4}, {0,5}, {1,0}, {1,1}, {1,5}, {2,0}, {2,1}, {2,2}, {2,3}, {2,4}, {4,0}, {4,1}, {4,2}, {4,3}, {4,4}, {5,0}, {5,1}, {5,5}, {6,3}, {6,4}, {6,5} };
+    sPresets["Gosper Glider Gun"] = { {0,2}, {0,3}, {1,2}, {1,3}, {8,3}, {8,4}, {9,2}, {9,4}, {10,2}, {10,3}, {16,4}, {16,5}, {16,6}, {17,4}, {18,5}, {22,1}, {22,2}, {23,0}, {23,2}, {24,0}, {24,1}, {24,12}, {24,13}, {25,12}, {25,14}, {26,12}, {34,0}, {34,1}, {35,0}, {35,1}, {35,7}, {35,8}, {35,9}, {36,7}, {37,8} };
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -84,6 +85,10 @@ void MainWindow::onPresetSelected(QString presetName) {
     mw.clear();
     const PPoints & ppoints = sPresets[presetName];
 
+    // set default desert size for preset
+    mSBWidth->setValue(100);
+    mSBHeight->setValue(100);
+
     // find minimum and maximum values of current preset
     QPoint min, max;
     min.rx() = std::numeric_limits<int>::max();
@@ -99,19 +104,23 @@ void MainWindow::onPresetSelected(QString presetName) {
 
     // adjust desert width if need
     // or center this preset horizontally
-    int xBase = qAbs(max.x() - min.x());
-    if (xBase > ui->centralWidget->desertWidth())
-        mSBWidth->setValue(xBase);
-    else
+    int xBase = qAbs(max.x() - min.x())+1;
+    if (xBase < ui->centralWidget->desertWidth()) {
         xBase = (ui->centralWidget->desertWidth() - xBase) / 2;
+    } else {
+        mSBWidth->setValue(xBase);
+        xBase = 0;
+    }
 
     // adjust desert height
     // or center this preset vertically
-    int yBase = qAbs(max.y() - min.y());
-    if (yBase > ui->centralWidget->desertHeight())
-        mSBHeight->setValue(yBase);
-    else
+    int yBase = qAbs(max.y() - min.y())+1;
+    if (yBase < ui->centralWidget->desertHeight()) {
         yBase = (ui->centralWidget->desertHeight() - yBase) / 2;
+    } else {
+        mSBHeight->setValue(yBase);
+        yBase = 0;
+    }
 
     // set points
     foreach (const QPoint & pt, ppoints) {
