@@ -7,23 +7,17 @@
 #include <QStatusBar>
 #include <QComboBox>
 #include <QMap>
+#include <limits>
 
 typedef QList<QPoint> PPoints;
-struct Preset {
-    QSize defaultSize;
-    PPoints points;
-    Preset() : defaultSize(21, 21) {}
-    Preset(const PPoints & pp) : defaultSize(21, 21), points(pp) {}
-};
-
-static QMap<QString, Preset> sPresets;
+static QMap<QString, PPoints> sPresets;
 
 void MainWindow::initPresets() {
     sPresets.clear();
-    sPresets["Clear"]    = Preset();
-    sPresets["Glider"]   = Preset( { {10,9}, {11,10}, {11,11}, {10,11}, {9,11} });
-    sPresets["Exploder"] = Preset( { {8,8}, {8,9}, {8,10}, {8,11}, {8,12}, {10,8}, {10,12}, {12,8}, {12,9}, {12,10}, {12,11}, {12,12} });
-    sPresets["Tumbler"]  = Preset( { {7,10}, {7,11}, {7,12}, {8,7}, {8,8}, {8,12}, {9,7}, {9,8}, {9,9}, {9,10}, {9,11}, {11,7}, {11,8}, {11,9}, {11,10}, {11,11}, {12,7}, {12,8}, {12,12}, {13,10}, {13,11}, {13,12} } );
+    sPresets["Empty"]    = { };
+    sPresets["Glider"]   = { {1,0}, {2,1}, {2,2}, {1,2}, {0,2} };
+    sPresets["Exploder"] = { {0,0}, {0,1}, {0,2}, {0,3}, {0,4}, {2,0}, {2,4}, {4,0}, {4,1}, {4,2}, {4,3}, {4,4} };
+    sPresets["Tumbler"]  = { {0,3}, {0,4}, {0,5}, {1,0}, {1,1}, {1,5}, {2,0}, {2,1}, {2,2}, {2,3}, {2,4}, {4,0}, {4,1}, {4,2}, {4,3}, {4,4}, {5,0}, {5,1}, {5,5}, {6,3}, {6,4}, {6,5} };
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -88,11 +82,46 @@ MainWindow::~MainWindow() {
 void MainWindow::onPresetSelected(QString presetName) {
     MainWidget & mw = *ui->centralWidget;
     mw.clear();
-    const Preset & preset = sPresets[presetName];
-    mSBWidth->setValue(preset.defaultSize.width());
-    mSBHeight->setValue(preset.defaultSize.height());
-    foreach (const QPoint & pt, preset.points)
-        mw.setAsLive(pt);
+    const PPoints & ppoints = sPresets[presetName];
+
+    // find minimum and maximum values of current preset
+    QPoint min, max;
+    min.rx() = std::numeric_limits<int>::max();
+    min.ry() = std::numeric_limits<int>::max();
+    max.rx() = std::numeric_limits<int>::min();
+    max.ry() = std::numeric_limits<int>::min();
+    foreach (const QPoint & pt, ppoints) {
+        if (pt.x() > max.x()) max.rx() = pt.x();
+        if (pt.x() < min.x()) min.rx() = pt.x();
+        if (pt.y() > max.y()) max.ry() = pt.y();
+        if (pt.y() < min.y()) min.ry() = pt.y();
+    }
+
+    // adjust desert width if need
+    // or center this preset horizontally
+    int xBase = qAbs(max.x() - min.x());
+    if (xBase > ui->centralWidget->desertWidth())
+        mSBWidth->setValue(xBase);
+    else
+        xBase = (ui->centralWidget->desertWidth() - xBase) / 2;
+
+    // adjust desert height
+    // or center this preset vertically
+    int yBase = qAbs(max.y() - min.y());
+    if (yBase > ui->centralWidget->desertHeight())
+        mSBHeight->setValue(yBase);
+    else
+        yBase = (ui->centralWidget->desertHeight() - yBase) / 2;
+
+    // set points
+    foreach (const QPoint & pt, ppoints) {
+        QPoint p(pt);
+        p.rx() += xBase;
+        p.ry() += yBase;
+        mw.setAsLive(p);
+    }
+
+    // redraw widget
     mw.update();
 }
 
