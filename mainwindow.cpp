@@ -9,6 +9,13 @@
 #include <QMap>
 #include <limits>
 
+static int defaultSizeMin = 4;
+static int defaultSizeMax = 100;
+static int defaultPresetW = 50;
+static int defaultPresetH = 50;
+static int intervalMin = 50;
+static int intervalMax = 5000;
+
 typedef QList<QPoint> PPoints;
 static QMap<QString, PPoints> sPresets;
 
@@ -42,13 +49,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->mainToolBar->addSeparator();
     mSBWidth = new QSpinBox(this);
-    mSBWidth->setMinimum(4);
-    mSBWidth->setMaximum(100);
+    mSBWidth->setMinimum(defaultSizeMin);
+    mSBWidth->setMaximum(defaultSizeMax);
     mSBWidth->setValue(ui->centralWidget->desertWidth());
     connect(mSBWidth, SIGNAL(valueChanged(int)), ui->centralWidget, SLOT(setDesertWidth(int)));
     mSBHeight = new QSpinBox(this);
-    mSBHeight->setMinimum(4);
-    mSBHeight->setMaximum(100);
+    mSBHeight->setMinimum(defaultSizeMin);
+    mSBHeight->setMaximum(defaultSizeMax);
     mSBHeight->setValue(ui->centralWidget->desertHeight());
     connect(mSBHeight, SIGNAL(valueChanged(int)), ui->centralWidget, SLOT(setDesertHeight(int)));
     ui->mainToolBar->addWidget(new QLabel(tr("Width:")));
@@ -58,8 +65,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->mainToolBar->addSeparator();
     mSBUpdateInterval = new QSpinBox(this);
-    mSBUpdateInterval->setMinimum(50);
-    mSBUpdateInterval->setMaximum(5000);
+    mSBUpdateInterval->setMinimum(intervalMin);
+    mSBUpdateInterval->setMaximum(intervalMax);
     mSBUpdateInterval->setValue(ui->centralWidget->updateInterval());
     connect(mSBUpdateInterval, SIGNAL(valueChanged(int)), ui->centralWidget, SLOT(setGenerationUpdateInterval(int)));
     ui->mainToolBar->addWidget(new QLabel(tr("Update interval (msec):")));
@@ -86,8 +93,8 @@ void MainWindow::onPresetSelected(QString presetName) {
     const PPoints & ppoints = sPresets[presetName];
 
     // set default desert size for preset
-    mSBWidth->setValue(100);
-    mSBHeight->setValue(100);
+    mSBWidth->setValue(defaultPresetW);
+    mSBHeight->setValue(defaultPresetH);
 
     // find minimum and maximum values of current preset
     QPoint min, max;
