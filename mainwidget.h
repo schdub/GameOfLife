@@ -38,6 +38,7 @@ private:
     bool mDrawGrid;
     QTimer * mTimer;
     QSize mDesertSize;
+    QSize mDesertSizeOld;
     QVector<bool> mCells;
     QStack< QPair< int, int > > mDeads;
     QStack< QPair< int, int > > mAlives;

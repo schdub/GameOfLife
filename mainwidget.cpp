@@ -150,11 +150,46 @@ void MainWidget::desertClear() {
 void MainWidget::desertAlloc() {
     int newSize = mDesertSize.width() * mDesertSize.height();
     int oldSize = mCells.size();
-    if (newSize != oldSize) {
+    if (oldSize == 0) {
         mCells.resize(newSize);
-        if (newSize > oldSize) {
-            // clear values for new ones
+        // clear values for new ones
+        if (newSize > oldSize)
             memset(mCells.data() + oldSize, 0, (newSize - oldSize) * sizeof(bool));
+    } else {
+        // were added new cells
+        if (mDesertSize.height() != mDesertSizeOld.height()) {
+            mCells.resize(newSize);
+        } else {
+            Q_ASSERT(mDesertSize.width() != mDesertSizeOld.width());
+            int diff = mDesertSize.width() - mDesertSizeOld.width();
+            bool addingNewOne = diff > 0;
+            if (addingNewOne) {
+                // add new cell(s)
+                mCells.resize(newSize);
+                bool * pSrc = mCells.data() + oldSize - mDesertSizeOld.width();
+                bool * pDst = mCells.data() + newSize - mDesertSize.width();
+                bool * pEnd = mCells.data();
+                for (;;) {
+                    for (int i = 0; i < diff; ++i)
+                        pDst[mDesertSizeOld.width() + i] = false;
+                    if (pSrc == pEnd) break;
+                    memmove(pDst, pSrc, mDesertSizeOld.width() * sizeof(bool));
+                    pSrc -= mDesertSizeOld.width();
+                    pDst -= mDesertSize.width();
+                }
+            } else {
+                // remove cell(s)
+                bool * pSrc = mCells.data() + mDesertSizeOld.width();
+                bool * pDst = mCells.data() + mDesertSize.width();
+                bool * pEnd = mCells.data() + mCells.size();
+                for (;;) {
+                    if (pSrc == pEnd) break;
+                    memmove(pDst, pSrc, mDesertSize.width() * sizeof(bool));
+                    pSrc += mDesertSizeOld.width();
+                    pDst += mDesertSize.width();
+                }
+                mCells.resize(newSize);
+            }
         }
     }
 }
@@ -223,6 +258,7 @@ void MainWidget::setDrawGrid(bool value) {
 }
 
 void MainWidget::setDesertWidth(int value) {
+    mDesertSizeOld = mDesertSize;
     mDesertSize.rwidth() = value;
     updateCellSize(size());
     desertAlloc();
@@ -230,6 +266,7 @@ void MainWidget::setDesertWidth(int value) {
 }
 
 void MainWidget::setDesertHeight(int value) {
+    mDesertSizeOld = mDesertSize;
     mDesertSize.rheight() = value;
     updateCellSize(size());
     desertAlloc();
