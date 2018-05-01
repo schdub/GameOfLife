@@ -13,7 +13,14 @@
   <property name="windowTitle">
    <string>GameOfLife - jsbot@ya.ru</string>
   </property>
-  <widget class="MainWidget" name="centralWidget"/>
+  <widget class="MainWidget" name="centralWidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+  </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="movable">
     <bool>false</bool>

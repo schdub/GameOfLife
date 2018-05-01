@@ -276,8 +276,13 @@ void MainWidget::setDesertHeight(int value) {
 }
 
 void MainWidget::updateCellSize(const QSize & size) {
-    mCellSize.setWidth(size.width() / mDesertSize.width());
-    mCellSize.setHeight(size.height() / mDesertSize.height());
+    qreal t;
+    t  = size.width();
+    t /= mDesertSize.width();
+    mCellSize.setWidth(t);
+    t  = size.height();
+    t /= mDesertSize.height();
+    mCellSize.setHeight(t);
     //TRACE << mCellSize;
 }
 
