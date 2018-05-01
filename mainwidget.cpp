@@ -227,11 +227,13 @@ bool * MainWidget::cellAt(const QPoint & pt) {
     return cellAt(pt.x(), pt.y());
 }
 
+static int loopPos(int pos, int mod) {
+    return (pos >= 0) ? pos % mod : mod - (-pos) % mod;
+}
+
 bool * MainWidget::cellAt(int x, int y) {
-    if (x >= mDesertSize.width() || x < 0 ||
-        y >= mDesertSize.height() || y < 0) {
-        return NULL;
-    }
+    x = loopPos(x, mDesertSize.width());
+    y = loopPos(y, mDesertSize.height());
     return mCells.data() + y * (mDesertSize.width()) + x;
 }
 
