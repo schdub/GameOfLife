@@ -14,7 +14,7 @@ static int defaultSizeMax = 200;
 static int defaultPresetW = 50;
 static int defaultPresetH = 50;
 static int intervalMin = 50;
-static int intervalMax = 5000;
+static int intervalMax = 1000;
 
 typedef QList<QPoint> PPoints;
 static QMap<QString, PPoints> sPresets;
@@ -69,7 +69,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mSBUpdateInterval->setMaximum(intervalMax);
     mSBUpdateInterval->setValue(ui->centralWidget->updateInterval());
     connect(mSBUpdateInterval, SIGNAL(valueChanged(int)), ui->centralWidget, SLOT(setGenerationUpdateInterval(int)));
-    ui->mainToolBar->addWidget(new QLabel(tr("Update interval (msec):")));
+    ui->mainToolBar->addWidget(new QLabel(tr("Update interval:")));
     ui->mainToolBar->addWidget(mSBUpdateInterval);
 
     mCBPresets = new QComboBox(this);
