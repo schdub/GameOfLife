@@ -3,14 +3,14 @@
 #include "mainwidget.h"
 
 #include <QLabel>
-#include <QSpinBox>
 #include <QStatusBar>
 #include <QComboBox>
 #include <QMap>
 #include <limits>
+#include <QSlider>
 
 static int defaultSizeMin = 4;
-static int defaultSizeMax = 100;
+static int defaultSizeMax = 200;
 static int defaultPresetW = 50;
 static int defaultPresetH = 50;
 static int intervalMin = 50;
@@ -48,12 +48,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->centralWidget, SIGNAL(endOfPopulation()), this, SLOT(onEnd()));
 
     ui->mainToolBar->addSeparator();
-    mSBWidth = new QSpinBox(this);
+    mSBWidth = new QSlider(Qt::Horizontal, this);
     mSBWidth->setMinimum(defaultSizeMin);
     mSBWidth->setMaximum(defaultSizeMax);
     mSBWidth->setValue(ui->centralWidget->desertWidth());
     connect(mSBWidth, SIGNAL(valueChanged(int)), ui->centralWidget, SLOT(setDesertWidth(int)));
-    mSBHeight = new QSpinBox(this);
+    mSBHeight = new QSlider(Qt::Horizontal, this);
     mSBHeight->setMinimum(defaultSizeMin);
     mSBHeight->setMaximum(defaultSizeMax);
     mSBHeight->setValue(ui->centralWidget->desertHeight());
@@ -64,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->mainToolBar->addWidget(mSBHeight);
 
     ui->mainToolBar->addSeparator();
-    mSBUpdateInterval = new QSpinBox(this);
+    mSBUpdateInterval = new QSlider(Qt::Horizontal, this);
     mSBUpdateInterval->setMinimum(intervalMin);
     mSBUpdateInterval->setMaximum(intervalMax);
     mSBUpdateInterval->setValue(ui->centralWidget->updateInterval());

@@ -7,7 +7,7 @@ namespace Ui {
 class MainWindow;
 }
 
-class QSpinBox;
+class QSlider;
 class QComboBox;
 
 class MainWindow : public QMainWindow {
@@ -24,9 +24,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QSpinBox * mSBWidth;
-    QSpinBox * mSBHeight;
-    QSpinBox * mSBUpdateInterval;
+    QSlider * mSBWidth;
+    QSlider * mSBHeight;
+    QSlider * mSBUpdateInterval;
     QComboBox * mCBPresets;
 
     void enableInputs(bool flag);
