@@ -53,12 +53,23 @@ void MainWidget::paintEvent(QPaintEvent *) {
     // draw grid
     if (mDrawGrid) {
         p.setPen(Qt::gray);
-        int dw = mDesertSize.width() * mCellSize.width();
-        int dh = mDesertSize.height() * mCellSize.height();
-        for (int x = 0; x < dw; x += mCellSize.width())
-            p.drawLine(x, 0, x, dh);
-        for (int y = 0; y < dh; y += mCellSize.height())
-            p.drawLine(0, y, dw, y);
+        qreal dw = mDesertSize.width() * mCellSize.width();
+        qreal dh = mDesertSize.height() * mCellSize.height();
+        QPointF pb(0, 0), pe(0, dh);
+        while (pb.x() < dw) {
+            pb.rx() += mCellSize.width();
+            pe.rx() += mCellSize.width();
+            p.drawLine(pb, pe);
+        }
+        pb.rx() = 0;
+        pb.ry() = 0;
+        pe.rx() = dw;
+        pe.ry() = 0;
+        while (pb.y() < dh) {
+            pb.ry() += mCellSize.height();
+            pe.ry() += mCellSize.height();
+            p.drawLine(pb, pe);
+        }
     }
     // draw cells
     p.setPen(Qt::yellow);
